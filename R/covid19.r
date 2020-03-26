@@ -183,14 +183,14 @@ x <- x[-1]
 y <- diff(S) / as.numeric(diff(df$ObservationDate))
 lreg1 <- lm(y ~ x + 0)
 print(summary(lreg1))
-# As p value is very low so we can accept the hypothesis and take coefficient value as value for r
+# As p value is very low so we can accept the alt-hypothesis and take coefficient value as value for r
 r <- -as.numeric(coef(lreg1))
 
 # Fit a linear model to estimate value of b
 y <- diff(R) / as.numeric(diff(df$ObservationDate))
 lreg2 <- lm(y ~ x + 0)
 print(summary(lreg2))
-# As p value is very low so we can accept the hypothesis and take coefficient value as value for b
+# As p value is very low so we can accept the alt-hypothesis and take coefficient value as value for b
 b <- as.numeric(coef(lreg2))
 
 # Execute SIR
