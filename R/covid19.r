@@ -121,8 +121,8 @@ rm(list=setdiff(ls(), c("dfCoronaData", "dfCovid19", "dfAggregated", "dfSIR")))
 ###-------------------------------------------------------------------------------------
 #  S.I.R Model for Covid19 Outbreak
 ###-------------------------------------------------------------------------------------
-# Source: https://www.youtube.com/watch?v=NKMHhm2Zbkw
-#         https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Improvement-of-math-model
+# References: https://www.youtube.com/watch?v=NKMHhm2Zbkw
+#             https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Improvement-of-math-model
 # S = Susceptibles
 # I = Infectives
 # R = Removed (Recovered or Died)
