@@ -121,8 +121,13 @@ rm(list=setdiff(ls(), c("dfCoronaData", "dfCovid19", "dfAggregated", "dfSIR")))
 ###-------------------------------------------------------------------------------------
 #  S.I.R Model for Covid19 Outbreak
 ###-------------------------------------------------------------------------------------
-# References: https://www.youtube.com/watch?v=NKMHhm2Zbkw
-#             https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Improvement-of-math-model
+# References: 
+#   -- https://www.ripublication.com/gjpam16/gjpamv12n2_11.pdf
+#   -- https://www.youtube.com/watch?v=NKMHhm2Zbkw
+#   -- https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Improvement-of-math-model
+#   -- https://kingaa.github.io/clim-dis/parest/parest.html
+#
+# SIR Model explanation:
 # S = Susceptibles
 # I = Infectives
 # R = Removed (Recovered or Died)
@@ -176,7 +181,7 @@ I <- df$Infected - df$Recovered
 R <- df$Recovered 
 S <- N - I - R
 
-# In order to estimate parameter (r & a) values, we have to fit linear regression models for each
+### SIR model parameters (r & a) estimation
 # Fit a linear model to estimate value of r
 x <- I * R / N
 x <- x[-1]
