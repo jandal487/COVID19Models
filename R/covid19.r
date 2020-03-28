@@ -176,7 +176,7 @@ rm(list=setdiff(ls(), c("dfCoronaData", "dfCovid19", "dfAggregated", "dfSIR")))
 #
 # SIR Model for Germany
 df <- dfSIR[dfSIR$Country.Region == "Germany",]
-N <- 82000000 # Assumption of 40 million population
+N <- 57000000 # Assumption of 40 million population
 I <- df$Infected - df$Recovered
 R <- df$Recovered 
 S <- N - I - R
@@ -192,15 +192,15 @@ print(summary(lreg1))
 r <- -as.numeric(coef(lreg1))
 
 # Fit a linear model to estimate value of b
-y <- diff(R) / as.numeric(diff(df$ObservationDate))
-lreg2 <- lm(y ~ x + 0)
-print(summary(lreg2))
+#y <- diff(R) / as.numeric(diff(df$ObservationDate))
+#lreg2 <- lm(y ~ x + 0)
+#print(summary(lreg2))
 # As p value is very low so we can accept the alt-hypothesis and take coefficient value as value for b
-b <- as.numeric(coef(lreg2))
-#b <- 1/14
+#b <- as.numeric(coef(lreg2))
+b <- 1/22 # rate of recovery (days)
 
 # Execute SIR
-n.sim = 180 # Number of days to prognose
+n.sim = 360 # Number of days to prognose
 position = length(df$ObservationDate)
 S = c(S, rep(0, n.sim))
 I = c(I, rep(0, n.sim))
@@ -235,7 +235,8 @@ library(reshape2)
 dfMelted <- reshape2::melt(dfResults, id="Dates")
 ggplot(data=dfMelted,
        aes(x=Dates, y=value, colour=variable)) +
-  geom_line() +
+  geom_line(size = 2, alpha = 0.9) +
+  scale_colour_manual(values=c("green", "red","blue")) +
   scale_x_date(date_labels = "%b %d", date_breaks = "14 days")
 
 
