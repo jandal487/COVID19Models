@@ -176,14 +176,14 @@ rm(list=setdiff(ls(), c("dfCoronaData", "dfCovid19", "dfAggregated", "dfSIR")))
 #
 # SIR Model for Germany
 df <- dfSIR[dfSIR$Country.Region == "Germany",]
-N <- 100000 # Assumption of 1 million population
+N <- 82000000 # Assumption of 40 million population
 I <- df$Infected - df$Recovered
 R <- df$Recovered 
 S <- N - I - R
 
 ### SIR model parameters (r & a) estimation
 # Fit a linear model to estimate value of r
-x <- I * R / N
+x <- I * S / N
 x <- x[-1]
 y <- diff(S) / as.numeric(diff(df$ObservationDate))
 lreg1 <- lm(y ~ x + 0)
@@ -197,9 +197,10 @@ lreg2 <- lm(y ~ x + 0)
 print(summary(lreg2))
 # As p value is very low so we can accept the alt-hypothesis and take coefficient value as value for b
 b <- as.numeric(coef(lreg2))
+#b <- 1/14
 
 # Execute SIR
-n.sim = 30 # Number of days to prognose
+n.sim = 180 # Number of days to prognose
 position = length(df$ObservationDate)
 S = c(S, rep(0, n.sim))
 I = c(I, rep(0, n.sim))
@@ -212,11 +213,11 @@ for(m in position+1:n.sim) {
   dS = -r*S[m-1]*I[m-1] / N
   S[m] = max(min(S[m-1] + dS, N), 0)
   
-  dR = b*I[m-1]
-  R[m] = min(R[m-1] + dR, N)
-  
   dI = r*S[m-1]*I[m-1] / N - b*I[m-1]
   I[m] = max(I[m-1] + dI, 0)
+  
+  dR = b*I[m-1]
+  R[m] = min(R[m-1] + dR, N)
   
   dates[m] = dates[m-1] + 1
 }
@@ -234,7 +235,8 @@ library(reshape2)
 dfMelted <- reshape2::melt(dfResults, id="Dates")
 ggplot(data=dfMelted,
        aes(x=Dates, y=value, colour=variable)) +
-  geom_line()
+  geom_line() +
+  scale_x_date(date_labels = "%b %d", date_breaks = "14 days")
 
 
 
