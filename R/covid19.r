@@ -233,11 +233,15 @@ dfResults <- data.frame(
 # Plot the results
 library(reshape2)
 dfMelted <- reshape2::melt(dfResults, id="Dates")
-ggplot(data=dfMelted,
-       aes(x=Dates, y=value, colour=variable)) +
-  geom_line(size = 2, alpha = 0.9) +
-  scale_colour_manual(values=c("green", "red","blue")) +
-  scale_x_date(date_labels = "%b %d", date_breaks = "14 days")
+plt <- ggplot2::ggplot(data=dfMelted,
+                       aes(x=Dates, y=value, colour=variable)) +
+          geom_line(size = 2, alpha = 0.9) +
+          scale_colour_manual(values=c("green", "red","blue")) +
+          scale_x_date(date_labels = "%b %d", date_breaks = "14 days")
+plt
 
-
+# Save the plot a file
+ggplot2::ggsave(plot = plt,
+                filename = 'results\\sir_model.png', 
+                width = 16, height = 9, dpi = 100)
 
